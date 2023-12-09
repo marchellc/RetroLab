@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{20BFDC59-9DF3-4966-8707-DFF29EFE0E6C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RetroLab.API</RootNamespace>
+    <AssemblyName>RetroLab.API</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <LangVersion>preview</LangVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Common\bin\Debug\Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Network">
+      <HintPath>..\..\Libraries\Network\bin\Debug\Network.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Authentification\AuthConfirmation.cs" />
+    <Compile Include="Authentification\AuthRequest.cs" />
+    <Compile Include="Authentification\AuthToken.cs" />
+    <Compile Include="Authentification\AuthTokenRequest.cs" />
+    <Compile Include="Authentification\AuthTokenResponse.cs" />
+    <Compile Include="Authentification\AuthTokenType.cs" />
+    <Compile Include="Authentification\AuthTokenValidationRequest.cs" />
+    <Compile Include="Authentification\AuthTokenValidationResponse.cs" />
+    <Compile Include="Authentification\AuthTokenValidationResult.cs" />
+    <Compile Include="Authentification\BadgeToken.cs" />
+    <Compile Include="Authentification\ServerToken.cs" />
+    <Compile Include="Players\PlayerAuthResponse.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Servers\ServerAuthResponse.cs" />
+    <Compile Include="Servers\ServerInfo.cs" />
+    <Compile Include="Servers\ServerListDownloadRequest.cs" />
+    <Compile Include="Servers\ServerListDownloadResponse.cs" />
+    <Compile Include="Servers\ServerListInfo.cs" />
+    <Compile Include="Servers\ServerListUpdateRequest.cs" />
+    <Compile Include="Servers\ServerListUpdateResponse.cs" />
+    <Compile Include="Servers\ServerListUpdateResult.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
