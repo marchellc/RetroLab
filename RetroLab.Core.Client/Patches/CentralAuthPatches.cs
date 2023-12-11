@@ -19,7 +19,7 @@ namespace RetroLab.Patches
     }
 
     [HarmonyPatch(typeof(CentralAuth), nameof(CentralAuth.Update))]
-    public static class UpdatePatch
+    public static class AuthUpdatePatch
     {
         public static bool Prefix(CentralAuth __instance)
         {
@@ -29,34 +29,26 @@ namespace RetroLab.Patches
                 Timing.RunCoroutine(RequestToken(__instance), Segment.FixedUpdate);
             }
 
-            if (!string.IsNullOrEmpty(__instance._roleToRequest) && PlayerManager.localPlayer != null && !string.IsNullOrEmpty(PlayerManager.localPlayer.GetComponent<NicknameSync>().myNick))
-            {
-                GameConsole.Console.singleton.AddLog("Requesting your global badge...", UnityEngine.Color.yellow, false);
-
-                __instance._ica.RequestBadge(__instance._roleToRequest);
-                __instance._roleToRequest = string.Empty;
-            }
-
             return false;
         }
 
         private static IEnumerator<float> RequestToken(CentralAuth ca)
         {
-            while (CentralClient.Client is null)
+            while (!CentralClient.IsConnected || CentralClient.Client is null)
             {
-                Network.Log.Warn($"Cannot authentificate - client is null!");
+                Network.Log.Warn($"Cannot authentificate - client is not connected!");
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            while (CentralClient.Token is null)
+            while (!DiscordClient.IsReady)
             {
-                Network.Log.Warn($"Cannot authentificate - missing token!");
+                Network.Log.Warn($"Cannot authentificate - Discord has not been loaded!");
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            Network.Log.Info($"Calling CentralAuthInterface::TokenGenerated with token ID {CentralClient.Token.Id}");
+            Network.Log.Info($"Calling CentralAuthInterface::TokenGenerated with token ID {DiscordClient.Id}");
 
-            ca._ica.TokenGenerated(CentralClient.Token.Id);
+            ca._ica.TokenGenerated(DiscordClient.Id);
         }
     }
 }

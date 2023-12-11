@@ -3,9 +3,7 @@
     public enum ServerListUpdateResult
     {
         Ok,
-
         NotVerified,
-
-        MissingInfo
+        Rejected
     }
 }

@@ -31,9 +31,8 @@ namespace RetroLab.Patches
             if (string.IsNullOrEmpty(text))
                 text = "Unity Editor";
 
-            __instance.Build.text = "Build: " + text;
-            __instance._centralserver = "Central Server: " + CentralServer.SelectedServer;
-            __instance.CentralServerText.text = __instance._centralserver;
+            __instance.Build.text = "Build: " + text;           
+            __instance.CentralServerText.text = __instance._centralserver = $"Central Server: {(CentralClient.IsConnected ? CentralClient.Client.Peer.Target.ToString() : "Not Connected!")}";
             __instance.GameLanguage.text = "Language:" + PlayerPrefs.GetString("translation_path", "English (default)");
             __instance.GameScene.text = "Scene: " + SceneManager.GetActiveScene().name;
 
@@ -56,7 +55,7 @@ namespace RetroLab.Patches
     {
         public static bool Prefix(DebugInfoLoader __instance)
         {
-            if (CentralClient.Client is null)
+            if (CentralClient.Client is null || !CentralClient.IsConnected)
                 __instance.CentralServerText.text = __instance._centralserver = $"Central Server: not connected";
             else
                 __instance.CentralServerText.text = __instance._centralserver = $"Central Server: {CentralClient.Client.Peer.Target}";

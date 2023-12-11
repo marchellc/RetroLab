@@ -8,46 +8,55 @@ namespace RetroLab
 {
     public class Logger : Common.Logging.ILogger
     {
-        public static Logger Instance;
+        public static Logger Instance { get; } = new Logger();
+
+        public static readonly Color32 Red = new Color32(byte.MaxValue, 0, 0, byte.MaxValue);
+        public static readonly Color32 Green = new Color32(193, byte.MaxValue, 51, byte.MaxValue);
+        public static readonly Color32 Yellow = new Color32(byte.MaxValue, 246, 51, byte.MaxValue);
+        public static readonly Color32 Cyan = new Color32(51, 252, byte.MaxValue, byte.MaxValue);
 
         private LogMessage last;
 
         public LogMessage Latest => last;
         public DateTime Started { get; }
 
-        public bool IsUnity { get; set; }
-
-        public Logger(bool unity)
+        public Logger()
         {
-            IsUnity = unity;
             Started = DateTime.Now;
-            Instance = this;
         }
 
         public void Emit(LogMessage message)
         {
             last = message;
 
-            if (IsUnity)
+            var msg = message.GetString(false, false);
+
+            Debug.Log(msg);
+
+            switch (message.Level)
             {
-                switch (message.Level)
-                {
-                    case LogLevel.Fatal:
-                    case LogLevel.Error:
-                        Debug.LogError(message.GetString());
-                        break;
+                case LogLevel.Fatal:
+                case LogLevel.Error:
+                    WriteConsole(msg, Red);
+                    break;
 
-                    case LogLevel.Warning:
-                        Debug.LogWarning(message.GetString());
-                        break;
+                case LogLevel.Warning:
+                    WriteConsole(msg, Yellow);
+                    break;
 
-                    default:
-                        Debug.Log(message.GetString());
-                        break;
-                }
+                case LogLevel.Information:
+                    WriteConsole(msg, Green);
+                    break;
+
+                case LogLevel.Verbose:
+                case LogLevel.Trace:
+                case LogLevel.Debug:
+                    WriteConsole(msg, Cyan);
+                    break;
             }
-
-            ServerConsole.AddLog(message.GetString(false));
         }
+
+        public static void WriteConsole(string txt, Color32 color)
+            => GameConsole.Console.singleton?.AddLog(txt, color);
     }
 }

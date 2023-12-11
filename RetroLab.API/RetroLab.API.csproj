@@ -41,6 +41,10 @@
     <Reference Include="Network">
       <HintPath>..\..\Libraries\Network\bin\Debug\Network.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SCP Secret Laboratory Server\SCPSL_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,27 +55,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentification\AuthConfirmation.cs" />
-    <Compile Include="Authentification\AuthRequest.cs" />
-    <Compile Include="Authentification\AuthToken.cs" />
-    <Compile Include="Authentification\AuthTokenRequest.cs" />
-    <Compile Include="Authentification\AuthTokenResponse.cs" />
-    <Compile Include="Authentification\AuthTokenType.cs" />
-    <Compile Include="Authentification\AuthTokenValidationRequest.cs" />
-    <Compile Include="Authentification\AuthTokenValidationResponse.cs" />
-    <Compile Include="Authentification\AuthTokenValidationResult.cs" />
-    <Compile Include="Authentification\BadgeToken.cs" />
-    <Compile Include="Authentification\ServerToken.cs" />
-    <Compile Include="Players\PlayerAuthResponse.cs" />
+    <Compile Include="Authentification\AuthValidationRequest.cs" />
+    <Compile Include="Authentification\AuthValidationResponse.cs" />
+    <Compile Include="Authentification\AuthValidationResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Servers\ServerAuthResponse.cs" />
-    <Compile Include="Servers\ServerInfo.cs" />
     <Compile Include="Servers\ServerListDownloadRequest.cs" />
     <Compile Include="Servers\ServerListDownloadResponse.cs" />
     <Compile Include="Servers\ServerListInfo.cs" />
     <Compile Include="Servers\ServerListUpdateRequest.cs" />
     <Compile Include="Servers\ServerListUpdateResponse.cs" />
     <Compile Include="Servers\ServerListUpdateResult.cs" />
+    <Compile Include="Servers\ServerVerificationRequest.cs" />
+    <Compile Include="Servers\ServerVerificationResponse.cs" />
+    <Compile Include="Servers\ServerVerificationUpdate.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

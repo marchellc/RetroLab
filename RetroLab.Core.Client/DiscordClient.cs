@@ -12,7 +12,7 @@ namespace RetroLab
 
         public static bool IsReady;
 
-        public static bool Prefix(DiscordController __instance, DiscordRpc.DiscordUser connectedUser)
+        public static bool Prefix(DiscordRpc.DiscordUser connectedUser)
         {
             Id = connectedUser.userId;
             Name = connectedUser.username;

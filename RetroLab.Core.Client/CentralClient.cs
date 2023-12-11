@@ -1,16 +1,16 @@
-﻿using Common.Logging;
+﻿using Common.IO.Collections;
+using Common.Logging;
 using Common.Reflection;
 
-using Network.Extensions;
+using MEC;
+
 using Network.Features;
 using Network.Requests;
 
 using RetroLab.API.Authentification;
-using RetroLab.API.Players;
 using RetroLab.API.Servers;
 
 using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace RetroLab
@@ -19,14 +19,16 @@ namespace RetroLab
     {
         public static CentralClient Client;
         public static RequestManager Requests;
-        public static AuthToken Token;
 
-        public static List<API.Servers.ServerInfo> Servers;
+        public static readonly LockedList<ServerListInfo> Servers = new LockedList<ServerListInfo>();
+
+        public static bool IsListRequested;
+        public static bool IsConnected;
+        public static bool IsAuthed;
+
+        public static AuthValidationResponse AuthResponse;
 
         private Timer timer;
-
-        private bool tokenRequested;
-        private bool listRequested;
 
         public override void OnStarted()
         {
@@ -36,95 +38,114 @@ namespace RetroLab
 
             Requests = Peer.Features.GetFeature<RequestManager>();
 
-            Transport.CreateHandler<AuthConfirmation>(OnAuthConfirmation);
-            Transport.CreateHandler<AuthRequest>(OnAuthRequest);
-
-            timer = new Timer(UpdateToken, null, 0, 1000);
-
-            Servers = new List<API.Servers.ServerInfo>();
-
             Log.Dispose();
 
             Log = new LogOutput($"Central Client");
-            Log.Setup();
+            Log.AddLogger(Logger.Instance);
 
             Log.Info("Initialized!");
+
+            IsConnected = true;
+
+            Timing.CallDelayed(1f, () => DownloadAuth());
         }
 
         public override void OnStopped()
         {
+            Utils.Disconnect("Disconnected from the central server.");
+
+            timer?.Dispose();
+            timer = null;
+
+            IsConnected = false;
+            IsListRequested = false;
+
+            DiscordClient.IsReady = false;
+            DiscordClient.ClearId = 0;
+            DiscordClient.Id = null;
+            DiscordClient.Name = null;
+
             base.OnStopped();
 
             Servers.Clear();
-            Servers = null;
-
-            timer.Dispose();
-            timer = null;
 
             Client = null;
             Requests = null;
-            Token = null;
+
+            Log.Warn($"The central server client has disconnected!");
         }
 
-        public void RequestToken()
+        public static void DownloadAuth(Action<AuthValidationResponse> callback = null)
         {
-            if (tokenRequested)
+            if (IsAuthed || !IsConnected || Client is null || Requests is null)
                 return;
 
-            tokenRequested = true;
+            Client.Log.Info($"Requesting authentification from the central server ..");
 
-            Log.Info("Requesting a new auth token from the central server ..");
-
-            Requests.Request<AuthTokenRequest, AuthTokenResponse>(new AuthTokenRequest(DiscordClient.Id, string.Empty), 0, (res, msg) =>
+            Requests.Request<AuthValidationRequest, AuthValidationResponse>(new AuthValidationRequest(DiscordClient.Id, DiscordClient.Name), 0, (res, msg) =>
             {
-                Token = msg.Token;
-                Log.Info($"Received a new auth token from the central server: {msg.Token.Id}");
-                tokenRequested = false;
+                IsAuthed = true;
+
+                AuthResponse = msg;
+
+                Client.Log.Info($"Received an auth response: {msg.Id} ({msg.Result})");
+
+                callback.Call(msg);
+
+                if (Client.timer is null)
+                    Client.timer = new Timer(_ =>
+                    {
+                        Timing.CallDelayed(0.1f, ServerListManager.singleton.Refresh);
+                    }, null, 100, 7000);
             });
         }
 
-        public void RequestList(Action<List<API.Servers.ServerInfo>> callback = null)
+        public static void DownloadServerList(Action<LockedList<ServerListInfo>> callback = null)
         {
-            if (listRequested)
+            if (IsListRequested || !IsConnected || Client is null || Requests is null)
                 return;
 
-            listRequested = true;
+            IsListRequested = true;
 
-            Log.Info($"Requesting a new server list from the central server ..");
+            Client.Log.Info($"Requesting a new server list from the central server ..");
 
-            Requests.Request<ServerListDownloadRequest, ServerListDownloadResponse>(new ServerListDownloadRequest(), 0, (res, msg) =>
+            try
             {
-                Servers.Clear();
-                Servers.AddRange(msg.Servers);
+                Requests.Request<ServerListDownloadRequest, ServerListDownloadResponse>(new ServerListDownloadRequest(DiscordClient.Id), 0, (res, msg) =>
+                {
+                    try
+                    {
+                        if (msg.Servers is null)
+                        {
+                            Client.Log.Error($"The received server array is null!");
+                            return;
+                        }
 
-                callback.Call(Servers);
+                        if (msg.Servers.Length <= 0)
+                        {
+                            Client.Log.Warn($"Received an empty server array.");
+                            return;
+                        }
 
-                Log.Info($"Received {Servers.Count} server(s) from the central server.");
+                        Client.Log.Info($"Received {msg.Servers.Length} server(s) from the central server.");
 
-                listRequested = false;
-            });
-        }
+                        Servers.Clear();
+                        Servers.AddRange(msg.Servers);
 
-        private void OnAuthRequest(AuthRequest msg)
-        {
-            Log.Info("Authentification requested.");
-            Transport.Send(new PlayerAuthResponse(DiscordClient.Id, DiscordClient.Name));
-            Log.Info("Authentification sent.");
-        }
+                        callback?.Invoke(Servers);
 
-        private void OnAuthConfirmation(AuthConfirmation confirmation)
-        {
-            Log.Info("Authentification confirmed.");
-            RequestToken();
-        }
-
-        private void UpdateToken(object _)
-        {
-            if (Token is null)
-                return;
-
-            if (!tokenRequested && Token.IsExpired())
-                RequestToken();
+                        IsListRequested = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        Client.Log.Error(ex);
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Client.Log.Error(ex);
+            }
         }
     }
 }

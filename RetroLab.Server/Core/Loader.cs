@@ -1,10 +1,8 @@
 ﻿using Common.Logging;
 using Common.Reflection;
 
-using RetroLab.Server.Authentification;
 using RetroLab.Server.Core;
 using RetroLab.Server.Network;
-using RetroLab.Server.Servers;
 
 namespace RetroLab
 {
@@ -34,12 +32,11 @@ namespace RetroLab
             Log.Info("Paths loaded!");
 
             Commands.Enable();
-            AuthTokenLoader.Load();
-            ServerListManager.Enable();
 
             Log.Info("Initializing the network system ..");
 
-            NetworkHandler.Load();
+            NetworkListManager.Enable();
+            NetworkManager.Load();
 
             Log.Info("Finished loading!");
 

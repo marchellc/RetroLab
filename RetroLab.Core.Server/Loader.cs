@@ -1,4 +1,5 @@
 ﻿using Common.Logging;
+using Common.Logging.File;
 
 using HarmonyLib;
 
@@ -15,9 +16,11 @@ namespace RetroLab
         {
             Log = new LogOutput("RetroLab.Loader");
             Log.AddLogger(Logger.Instance);
+            Log.AddLogger(LogOutput.Common.GetLogger<FileLogger>());
 
             Utils.Log = new LogOutput("RetroLab.Utils");
             Utils.Log.AddLogger(Logger.Instance);
+            Utils.Log.AddLogger(LogOutput.Common.GetLogger<FileLogger>());
 
             Log.Info("Hello! Initializing Harmony ..");
 
@@ -45,6 +48,8 @@ namespace RetroLab
             }
 
             Log.Info("Config loaded!");
+
+            Network.Load();
         }
     }
 }

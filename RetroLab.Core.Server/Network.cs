@@ -5,6 +5,7 @@ using Network.Tcp;
 using System.Net;
 
 using Network.Requests;
+using Common.Logging.File;
 
 namespace RetroLab
 {
@@ -17,6 +18,7 @@ namespace RetroLab
         {
             Log = new LogOutput("RetroLab.Network");
             Log.AddLogger(Logger.Instance);
+            Log.AddLogger(LogOutput.Common.GetLogger<FileLogger>());
 
             Log.Info("Initializing network ..");
 

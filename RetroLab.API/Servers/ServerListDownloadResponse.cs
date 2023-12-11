@@ -3,23 +3,22 @@
 using Network.Extensions;
 using Network.Interfaces.Transporting;
 
-using System.Collections.Generic;
 using System.IO;
 
 namespace RetroLab.API.Servers
 {
     public struct ServerListDownloadResponse : IMessage
     {
-        public List<ServerInfo> Servers;
+        public ServerListInfo[] Servers;
 
-        public ServerListDownloadResponse(List<ServerInfo> servers)
+        public ServerListDownloadResponse(ServerListInfo[] servers)
         {
             Servers = servers;
         }
 
         public void Read(BinaryReader reader, ITransport transport)
         {
-            Servers = reader.ReadList(() => reader.ReadObject<ServerInfo>(transport));
+            Servers = reader.ReadArray(false, () => reader.ReadObject<ServerListInfo>(transport));
         }
 
         public void Write(BinaryWriter writer, ITransport transport)

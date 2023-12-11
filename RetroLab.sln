@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroLab.Server", "RetroLab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroLab.API", "RetroLab.API\RetroLab.API.csproj", "{20BFDC59-9DF3-4966-8707-DFF29EFE0E6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroLab.Core.Server", "RetroLab.Core\RetroLab.Core.Server.csproj", "{3F09E3D7-8D2D-4F79-827E-92B5D2B643CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroLab.Core.Server", "RetroLab.Core.Server\RetroLab.Core.Server.csproj", "{3F09E3D7-8D2D-4F79-827E-92B5D2B643CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroLab.Core.Client", "RetroLab.Core.Client\RetroLab.Core.Client.csproj", "{58959852-C17D-405C-89A4-FFE13E7AE986}"
 EndProject

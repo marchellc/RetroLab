@@ -5,6 +5,7 @@ using MEC;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RetroLab.Patches
 {
@@ -13,43 +14,39 @@ namespace RetroLab.Patches
     {
         public static bool Prefix(ServerListManager __instance)
         {
+            if (!SceneManager.GetActiveScene().name.Contains("Menu"))
+                return false;
+
             Timing.RunCoroutine(Refresh(__instance));
             return false;
         }
 
         private static IEnumerator<float> Refresh(ServerListManager sl)
         {
+            if (!SceneManager.GetActiveScene().name.Contains("Menu"))
+                yield break;
+
             foreach (var spawn in sl.spawns)
                 Object.Destroy(spawn);
 
             sl.spawns.Clear();
-            sl.loadingText.text = "";
+            sl.loadingText.text = "Downloading server list ..";
 
-            while (CentralClient.Client is null)
+            while (CentralClient.Client is null || !CentralClient.IsConnected || CentralClient.Requests is null)
             {
-                sl.loadingText.text = "The central server client is invalid.";
+                sl.loadingText.text = "The central server client is not connected";
                 yield return Timing.WaitForSeconds(1f);
             }
 
-            sl.loadingText.text = "Downloading server list ..";
+            sl.loadingText.text = "";
 
-            CentralClient.Client.RequestList(servers =>
+            CentralClient.DownloadServerList(_ =>
             {
-                sl.loadingText.text = string.Empty;
+                if (!SceneManager.GetActiveScene().name.Contains("Menu"))
+                    return;
 
-                foreach (var server in servers)
-                {
-                    if (sl.filters != null && !sl.filters.AllowToSpawn(server.Info.Name))
-                        continue;
-
-                    var rec = sl.AddRecord().GetComponent<PlayButton>();
-
-                    rec.Ip = server.Ip;
-                    rec.Port = server.Port.ToString();
-                    rec.InfoType = server.Info.Pastebin;
-                    rec.Motd.text = server.Info.Name;
-                    rec.Players.text = $"{server.Info.Players}/{server.Info.MaxPlayers}";
-                }
+                foreach (var server in CentralClient.Servers)
+                    sl.TrySpawnRecord(server);
             });
         }
     }

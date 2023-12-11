@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +45,16 @@
     <Reference Include="BouncyCastle.Crypto">
       <HintPath>..\..\SCP Secret Laboratory Server\SCPSL_Data\Managed\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
+    <Reference Include="Common">
+      <HintPath>..\..\Libraries\Common\bin\Debug\Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Network">
+      <HintPath>..\..\Libraries\Network\bin\Debug\Network.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SCP Secret Laboratory Server\SCPSL_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Smod2">
       <HintPath>..\..\SCP Secret Laboratory Server\SCPSL_Data\Managed\Smod2.dll</HintPath>
     </Reference>
@@ -69,10 +80,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CentralClient.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Loader.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Network.cs" />
+    <Compile Include="Patches\CentralAuthInterfacePatches.cs" />
+    <Compile Include="Patches\CentralAuthPatches.cs" />
+    <Compile Include="Patches\CentralServerKeyCachePatches.cs" />
+    <Compile Include="Patches\CentralServerPatches.cs" />
+    <Compile Include="Patches\RemoteAdminCryptographicManagerPatches.cs" />
+    <Compile Include="Patches\ServerConsolePatches.cs" />
+    <Compile Include="Patches\ServerRolesPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RetroLab.API\RetroLab.API.csproj">
+      <Project>{20bfdc59-9df3-4966-8707-dff29efe0e6c}</Project>
+      <Name>RetroLab.API</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

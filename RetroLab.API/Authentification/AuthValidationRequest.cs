@@ -4,29 +4,29 @@ using Network.Interfaces.Transporting;
 
 using System.IO;
 
-namespace RetroLab.API.Players
+namespace RetroLab.API.Authentification
 {
-    public struct PlayerAuthResponse : IMessage
+    public struct AuthValidationRequest : IMessage
     {
         public string Id;
-        public string Name;
+        public string Nick;
 
-        public PlayerAuthResponse(string id, string name)
+        public AuthValidationRequest(string id, string nick)
         {
             Id = id;
-            Name = name;
+            Nick = nick;
         }
 
         public void Read(BinaryReader reader, ITransport transport)
         {
             Id = reader.ReadStringEx();
-            Name = reader.ReadStringEx();
+            Nick = reader.ReadStringEx();
         }
 
         public void Write(BinaryWriter writer, ITransport transport)
         {
             writer.WriteString(Id);
-            writer.WriteString(Name);
+            writer.WriteString(Nick);
         }
     }
 }

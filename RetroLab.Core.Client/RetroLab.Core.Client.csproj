@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -90,7 +91,9 @@
     <Compile Include="Patches\CentralServerKeyCachePatches.cs" />
     <Compile Include="Patches\CentralServerPatches.cs" />
     <Compile Include="Patches\DebugInfoLoaderPatches.cs" />
+    <Compile Include="Patches\NicknameSyncPatches.cs" />
     <Compile Include="Patches\ServerListManagerPatches.cs" />
+    <Compile Include="Patches\ServerRolesPatches.cs" />
     <Compile Include="Patches\SteamManagerPatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils.cs" />
