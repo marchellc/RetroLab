@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization.Metadata;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace RetroLab.Server.Utilities
 {
@@ -8,10 +7,7 @@ namespace RetroLab.Server.Utilities
         public static readonly JsonSerializerOptions Options = new JsonSerializerOptions
         {
             IncludeFields = false,
-
             WriteIndented = true,
-
-            TypeInfoResolver = new DefaultJsonTypeInfoResolver(),
         };
 
         public static T Deserialize<T>(this string json)

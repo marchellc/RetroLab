@@ -67,8 +67,8 @@ namespace RetroLab.Server.Core
                 }
             }
 
-            Keys = keys.AsReadOnly();
-            Switches = switches.AsReadOnly();
+            Keys = new Dictionary<string, string>(keys);
+            Switches = new List<string>(switches);
 
             keys.Clear();
             keys = null;

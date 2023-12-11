@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34321.82
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroLab", "RetroLab\RetroLab.csproj", "{8C6D6B1D-CF0D-430F-A986-2C48CFF27C7C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroLab.Server", "RetroLab.Server\RetroLab.Server.csproj", "{CF4E5FF3-8BFD-46D3-8AF8-E0FC1BEF010E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroLab.API", "RetroLab.API\RetroLab.API.csproj", "{20BFDC59-9DF3-4966-8707-DFF29EFE0E6C}"
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8C6D6B1D-CF0D-430F-A986-2C48CFF27C7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C6D6B1D-CF0D-430F-A986-2C48CFF27C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C6D6B1D-CF0D-430F-A986-2C48CFF27C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C6D6B1D-CF0D-430F-A986-2C48CFF27C7C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CF4E5FF3-8BFD-46D3-8AF8-E0FC1BEF010E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CF4E5FF3-8BFD-46D3-8AF8-E0FC1BEF010E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF4E5FF3-8BFD-46D3-8AF8-E0FC1BEF010E}.Release|Any CPU.ActiveCfg = Release|Any CPU
