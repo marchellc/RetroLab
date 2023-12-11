@@ -3,12 +3,12 @@ This is a long time due work of mine, which was originally supposed to be an eve
 
 **RetroLab** is a modification for **SCP: Secret Laboratory** version **8.0.0** *(Revision III)*. It allows you to host a dedicated server on Windows *or* Linux along with your very own central server, which provides player authentification (including global moderator ranks and global bans) and a server list. Basically, an old version working with all features as a new one would.
 
-**Also, the server build comes packaged with ServerMod v3.2.0-A, which allows you to install plugins made for this version.*
+*Also, the server build comes packaged with ServerMod v3.2.0-A, which allows you to install plugins made for this version.*
 
 # Installation
 This step is common for every client type.
 1) Go to the Releases page and find the release that contains full SCP: Secret Laboratory builds. Then download the one you need (**SCP Secret Laboratory Client** is the game itself, **SCP Secret Laboratory Server_Windows** is the Windows server and **SCP Secret Laboratory Server_Linux** is the Linux server).
-2) Find the latest release (it's tag will contain the type of your client, ex. **v1.0.0-game** for the game, **v1.0.0-server** for the dedicated server.
+2) Find the latest release (it's tag will contain the type of your client, ex. **v1.0.0-game** for the game, **v1.0.0-server** for the dedicated server).
 3) Download all the files ending with **.dll** listed in that release and put them in the **Managed** folder (which is located under **SCPSL_Data**)
 
 ## Central
