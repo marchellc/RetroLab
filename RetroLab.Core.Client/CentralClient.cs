@@ -59,11 +59,7 @@ namespace RetroLab
 
             IsConnected = false;
             IsListRequested = false;
-
-            DiscordClient.IsReady = false;
-            DiscordClient.ClearId = 0;
-            DiscordClient.Id = null;
-            DiscordClient.Name = null;
+            IsAuthed = false;
 
             base.OnStopped();
 
@@ -71,6 +67,8 @@ namespace RetroLab
 
             Client = null;
             Requests = null;
+
+            AuthResponse = default;
 
             Log.Warn($"The central server client has disconnected!");
         }
@@ -96,7 +94,7 @@ namespace RetroLab
                     Client.timer = new Timer(_ =>
                     {
                         Timing.CallDelayed(0.1f, ServerListManager.singleton.Refresh);
-                    }, null, 100, 7000);
+                    }, null, 150, 15000);
             });
         }
 
@@ -115,6 +113,12 @@ namespace RetroLab
                 {
                     try
                     {
+                        IsListRequested = false;
+
+                        Servers.Clear();
+
+                        callback?.Invoke(Servers);
+
                         if (msg.Servers is null)
                         {
                             Client.Log.Error($"The received server array is null!");
@@ -123,18 +127,12 @@ namespace RetroLab
 
                         if (msg.Servers.Length <= 0)
                         {
-                            Client.Log.Warn($"Received an empty server array.");
+                            Client.Log.Warn($"Received an empty server list.");
                             return;
                         }
 
                         Client.Log.Info($"Received {msg.Servers.Length} server(s) from the central server.");
-
-                        Servers.Clear();
                         Servers.AddRange(msg.Servers);
-
-                        callback?.Invoke(Servers);
-
-                        IsListRequested = false;
                     }
                     catch (Exception ex)
                     {

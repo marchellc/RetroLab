@@ -172,7 +172,17 @@ namespace RetroLab.Server.Network
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(msg.Info.Name) || string.IsNullOrWhiteSpace(msg.Info.Pastebin) 
+                || string.IsNullOrWhiteSpace(msg.Info.Ip) || msg.Info.Port <= 0 || msg.Info.Port >= (short.MaxValue * 2)
+                || msg.Info.MaxPlayers <= 0 || msg.Info.Players < 0)
+            {
+                Log.Warn($"Request contains invalid data, rejecting.");
+                request.Fail(new ServerListUpdateResponse(ServerListUpdateResult.Rejected));
+                return;
+            }
+
             List = msg.Info;
+
             request.Success(new ServerListUpdateResponse(ServerListUpdateResult.Ok));
         }
 

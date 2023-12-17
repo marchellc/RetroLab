@@ -36,10 +36,11 @@
   <ItemGroup>
     <Reference Include="Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Common\bin\Debug\Common.dll</HintPath>
+      <HintPath>..\RetroLab.Core.Client\bin\Release\Common.dll</HintPath>
     </Reference>
-    <Reference Include="Network">
-      <HintPath>..\..\Libraries\Network\bin\Debug\Network.dll</HintPath>
+    <Reference Include="Network, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RetroLab.Core.Client\bin\Release\Network.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.1.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

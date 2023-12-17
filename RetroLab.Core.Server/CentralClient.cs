@@ -1,7 +1,9 @@
 ﻿using Common.Logging;
 using Common.Logging.File;
 using Common.Reflection;
+
 using MEC;
+
 using Network.Features;
 using Network.Requests;
 
@@ -59,6 +61,8 @@ namespace RetroLab
             updateTimer = null;
 
             IsConnected = false;
+            IsVerified = false;
+            IsRequested = false;
 
             Client = null;
             Requests = null;
