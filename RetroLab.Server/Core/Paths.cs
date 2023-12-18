@@ -6,20 +6,13 @@ namespace RetroLab.Server.Core
     {
         public static string Main;
         public static string Net;
-        public static string Servers;
-        public static string Players;
 
         public static void Load()
         {
             Main = Directory.GetCurrentDirectory();
-
             Net = $"{Main}/Network";
-            Servers = $"{Main}/Servers";
-            Players = $"{Main}/Players";
 
             CheckDir(Net);
-            CheckDir(Servers);
-            CheckDir(Players);
         }
 
         public static T GetJson<T>(string main, string file, T defaultValue)

@@ -1,5 +1,7 @@
 ﻿using Common.Logging;
 using Common.Extensions;
+using Common.Logging.File;
+using Common.Logging.Console;
 
 using RetroLab.Server.Core;
 using RetroLab.Server.Network;
@@ -15,7 +17,8 @@ namespace RetroLab
         public static async Task Main(string[] args)
         {
             Log = new LogOutput("RetroLab.Loader");
-            Log.Setup();
+            Log.AddLogger(new FileLogger(LogUtils.GetFilePath("Loader")));
+            Log.AddLogger(new ConsoleLogger());
 
             Log.Info($"Welcome! Initializing the central server application ..");
 

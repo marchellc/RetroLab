@@ -29,10 +29,10 @@ namespace RetroLab.Server.Network
 
             Log.Info($"Initializing the server list ..");
 
-            saveTimer = new Timer(SaveServers, null, 0, 1000);
-
             VerifiedServers.Clear();
             VerifiedServers.AddRange(Paths.GetJson(Paths.Net, "verified.json", new List<string>() { "127.0.0.1" }));
+
+            saveTimer = new Timer(SaveServers, null, 0, 5000);
 
             Log.Info($"Loaded {VerifiedServers.Count} verified server(s) from the cache.");
         }
@@ -62,12 +62,14 @@ namespace RetroLab.Server.Network
             {
                 VerifiedServers.Add(ip);
                 SendUpdate(ip, status);
+                SaveServers(null);
                 Log.Info($"Verified server IP {ip}");
                 return true;
             }
             else if (VerifiedServers.Remove(ip))
             {
                 SendUpdate(ip, status);
+                SaveServers(null);
                 Log.Info($"Removed verification of server IP {ip}");
                 return true;
             }

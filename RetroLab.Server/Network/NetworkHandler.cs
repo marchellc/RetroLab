@@ -82,14 +82,10 @@ namespace RetroLab.Server.Network
             IsVerified = status;
 
             Transport.Send(new ServerVerificationUpdate(IsVerified));
-
-            Log.Info($"Send a verification update message (new status: {status})");
         }
 
         private void OnAuthValidationRequest(IRequest request, AuthValidationRequest msg)
         {
-            Log.Debug($"Received an auth validation request for ID: {msg.Id}");
-
             if (string.IsNullOrWhiteSpace(msg.Id))
             {
                 Log.Warn($"Request contains an empty ID, rejecting as Invalid.");
@@ -116,20 +112,14 @@ namespace RetroLab.Server.Network
                 var isBanned = NetworkBanManager.IsBanned(msg.Id);
                 var isMod = NetworkRoleManager.IsModerator(msg.Id);
 
-                Log.Info($"Responding with Ok result ({isBanned}, {isMod})");
-
                 request.Success(new AuthValidationResponse(msg.Id, cache.Nick, isMod, isBanned, AuthValidationResult.Ok));
             }
             else
             {
                 AuthCache[msg.Id] = msg;
 
-                Log.Debug($"Cached {msg.Id} request with nick {msg.Nick}");
-
                 var isBanned = NetworkBanManager.IsBanned(msg.Id);
                 var isMod = NetworkRoleManager.IsModerator(msg.Id);
-
-                Log.Debug($"Responding with Ok result ({isBanned}, {isMod})");
 
                 request.Success(new AuthValidationResponse(msg.Id, msg.Nick, isMod, isBanned, AuthValidationResult.Ok));
             }
@@ -137,8 +127,6 @@ namespace RetroLab.Server.Network
 
         private void OnServerListDownloadRequest(IRequest request, ServerListDownloadRequest msg)
         {
-            Log.Debug($"Received a server list download request.");
-
             if (!IsLoaded)
                 SetClientAuthority(msg.Id);
 
@@ -149,7 +137,6 @@ namespace RetroLab.Server.Network
                 return;
             }
 
-            Log.Debug($"Responding with a list of verified servers.");
             request.Success(new ServerListDownloadResponse(NetworkListManager.GetServers()));
         }
 
