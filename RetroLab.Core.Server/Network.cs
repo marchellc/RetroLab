@@ -1,11 +1,11 @@
 ﻿using Common.Logging;
+using Common.Logging.File;
 
 using Network.Tcp;
 
 using System.Net;
 
 using Network.Requests;
-using Common.Logging.File;
 
 namespace RetroLab
 {
@@ -17,8 +17,10 @@ namespace RetroLab
         public static void Load()
         {
             Log = new LogOutput("RetroLab.Network");
+
             Log.AddLogger(Logger.Instance);
-            Log.AddLogger(LogOutput.Common.GetLogger<FileLogger>());
+
+            LogOutput.Common.AddLogger(Logger.Instance);
 
             Log.Info("Initializing network ..");
 

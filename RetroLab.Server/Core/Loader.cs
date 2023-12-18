@@ -1,5 +1,5 @@
 ﻿using Common.Logging;
-using Common.Extensions;
+using Common.Reflection;
 using Common.Logging.File;
 using Common.Logging.Console;
 
@@ -17,6 +17,7 @@ namespace RetroLab
         public static async Task Main(string[] args)
         {
             Log = new LogOutput("RetroLab.Loader");
+
             Log.AddLogger(new FileLogger(LogUtils.GetFilePath("Loader")));
             Log.AddLogger(new ConsoleLogger());
 

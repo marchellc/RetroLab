@@ -1,5 +1,7 @@
 ﻿using Common.IO.Collections;
 using Common.Logging;
+using Common.Logging.Console;
+using Common.Logging.File;
 using Common.Pooling.Pools;
 
 using RetroLab.API.Servers;
@@ -23,7 +25,9 @@ namespace RetroLab.Server.Network
             Log?.Dispose();
 
             Log = new LogOutput("RetroLab.ServerList");
-            Log.Setup();
+
+            Log.AddLogger(new FileLogger(LogUtils.GetFilePath("ServerList")));
+            Log.AddLogger(new ConsoleLogger());
 
             Commands.Create("verification", SetStatusCommand);
 

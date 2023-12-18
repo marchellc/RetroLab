@@ -1,17 +1,27 @@
 ﻿using Common.IO.Collections;
 using Common.Logging;
-using Common.Extensions;
+using Common.Reflection;
+using Common.Logging.File;
+using Common.Logging.Console;
 
 namespace RetroLab.Server.Core
 {
     public static class Commands
     {
         private static Timer timer;
+        private static LogOutput log;
         private static LockedDictionary<string, Func<string[], string>> commands = new LockedDictionary<string, Func<string[], string>>();
 
         public static void Enable()
         {
             timer = new Timer(OnUpdate, null, 0, 500);
+
+            log = new LogOutput("Commands");
+
+            log.AddLogger(new FileLogger(LogUtils.GetFilePath("Commands")));
+            log.AddLogger(new ConsoleLogger());
+
+            log.Info("Commands enabled.");
         }
 
         public static void Create(string cmd, Func<string[], string> callback)
@@ -31,11 +41,11 @@ namespace RetroLab.Server.Core
 
             var cmd = split[0].ToLower();
 
-            LogOutput.Common.Raw($">>> {cmd.ToUpper()}", ConsoleColor.Magenta);
+            log.Raw($">>> {cmd.ToUpper()}", ConsoleColor.Magenta);
 
             if (!commands.TryGetValue(cmd, out var callback))
             {
-                LogOutput.Common.Raw(">>> No such command.", ConsoleColor.Red);
+                log.Raw(">>> No such command.", ConsoleColor.Red);
                 return;
             }
 
@@ -43,11 +53,11 @@ namespace RetroLab.Server.Core
 
             if (string.IsNullOrWhiteSpace(output))
             {
-                LogOutput.Common.Raw(">>> No output from command.", ConsoleColor.Green);
+                log.Raw(">>> No output from command.", ConsoleColor.Green);
                 return;
             }
 
-            LogOutput.Common.Raw($">>> {output}", ConsoleColor.Blue);
+            log.Raw($">>> {output}", ConsoleColor.Blue);
         }
     }
 }

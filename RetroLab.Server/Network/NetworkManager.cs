@@ -1,4 +1,6 @@
 ﻿using Common.Logging;
+using Common.Logging.Console;
+using Common.Logging.File;
 
 using Network.Requests;
 using Network.Tcp;
@@ -18,7 +20,9 @@ namespace RetroLab.Server.Network
         public static void Load()
         {
             Log = new LogOutput("RetroLab.Network");
-            Log.Setup();
+
+            Log.AddLogger(new FileLogger(LogUtils.GetFilePath("Network")));
+            Log.AddLogger(new ConsoleLogger());
 
             Config = Paths.GetJson(Paths.Net, "config.json", new NetworkConfig());
 

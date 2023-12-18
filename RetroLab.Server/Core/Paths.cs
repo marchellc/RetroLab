@@ -19,15 +19,20 @@ namespace RetroLab.Server.Core
         {
             var path = $"{main}/{file}";
 
+            Program.Log.Trace($"Loading JSON ({typeof(T).FullName}) from file '{path}'");
+
             CheckDir(main);
            
-            if (!File.Exists(file))
+            if (!File.Exists(path))
             {
+                Program.Log.Trace($"File does not exist, writing default ..");
+
                 File.WriteAllText(path, JsonHelper.Serialize(defaultValue));
                 return defaultValue;
             }
 
-            return JsonHelper.Deserialize<T>(File.ReadAllText(file));
+            Program.Log.Trace($"File exists, attempting to deserialize ..");
+            return JsonHelper.Deserialize<T>(File.ReadAllText(path));
         }
 
         public static void Write(string main, string file, object value)

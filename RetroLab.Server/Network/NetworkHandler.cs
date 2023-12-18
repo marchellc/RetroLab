@@ -1,4 +1,6 @@
 ﻿using Common.IO.Collections;
+using Common.Logging;
+using Common.Logging.Console;
 
 using Network.Extensions;
 using Network.Features;
@@ -42,6 +44,11 @@ namespace RetroLab.Server.Network
 
             Handlers.Add(this);
 
+            Log?.Dispose();
+
+            Log = new LogOutput("Client");
+            Log.AddLogger(new ConsoleLogger());
+
             Log.Info("Initialized.");
         }
 
@@ -52,6 +59,8 @@ namespace RetroLab.Server.Network
             IsVerified = false;
             IsServer = false;
             IsLoaded = false;
+
+            AuthCache.Remove(Id);
 
             Id = null;
             Ip = null;

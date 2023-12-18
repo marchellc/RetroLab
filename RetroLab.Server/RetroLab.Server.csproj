@@ -12,15 +12,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\RetroLab.API\RetroLab.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Common">
-      <HintPath>..\..\Libraries\Common\bin\Debug\Common.dll</HintPath>
+      <HintPath>..\RetroLab.Core.Client\bin\Release\Common.dll</HintPath>
     </Reference>
     <Reference Include="Network">
-      <HintPath>..\..\Libraries\Network\bin\Debug\Network.dll</HintPath>
+      <HintPath>..\RetroLab.Core.Client\bin\Release\Network.dll</HintPath>
+    </Reference>
+    <Reference Include="Telepathy">
+      <HintPath>..\RetroLab.Core.Client\bin\Release\Telepathy.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -18,6 +18,8 @@ namespace RetroLab
             Log = new LogOutput("RetroLab.Network");
             Log.AddLogger(Logger.Instance);
 
+            LogOutput.Common.AddLogger(Logger.Instance);
+
             Log.Info("Initializing network ..");
 
             if (!IPAddress.TryParse(Config.Instance.Ip, out var ip))
