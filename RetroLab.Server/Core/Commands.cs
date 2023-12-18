@@ -41,23 +41,23 @@ namespace RetroLab.Server.Core
 
             var cmd = split[0].ToLower();
 
-            log.Raw($">>> {cmd.ToUpper()}", ConsoleColor.Magenta);
+            log.Info($">>> {cmd.ToUpper()}");
 
             if (!commands.TryGetValue(cmd, out var callback))
             {
-                log.Raw(">>> No such command.", ConsoleColor.Red);
+                log.Error(">>> No such command.");
                 return;
             }
 
-            var output = callback.Call(split.Skip(1).ToArray());
+            var output = callback.Call(split.Skip(1).ToArray(), ex => log.Error($"Command execution failed!\n{ex}"));
 
             if (string.IsNullOrWhiteSpace(output))
             {
-                log.Raw(">>> No output from command.", ConsoleColor.Green);
+                log.Warn(">>> No output from command.");
                 return;
             }
 
-            log.Raw($">>> {output}", ConsoleColor.Blue);
+            log.Info($">>> {output}");
         }
     }
 }

@@ -117,8 +117,6 @@ namespace RetroLab
 
                         Servers.Clear();
 
-                        callback?.Invoke(Servers);
-
                         if (msg.Servers is null)
                         {
                             Client.Log.Error($"The received server array is null!");
@@ -132,7 +130,10 @@ namespace RetroLab
                         }
 
                         Client.Log.Info($"Received {msg.Servers.Length} server(s) from the central server.");
+
                         Servers.AddRange(msg.Servers);
+
+                        callback.Call(Servers, null, ex => Client.Log.Error($"An error occured while refreshing the server list!\n{ex}"));
                     }
                     catch (Exception ex)
                     {
